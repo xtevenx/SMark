@@ -1,0 +1,8 @@
+# auto-generated Python files
+__pycache__/
+
+# PyCharm configuration files
+.idea/
+
+# Python virtualenv files
+venv/
