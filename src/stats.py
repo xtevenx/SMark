@@ -1,3 +1,18 @@
+"""
+The `stats` module contains the functions required to get statistical
+attribute from a set of data.
+
+  This module currently contains the following functions:
+* mean  (arithmetic mean)
+* stddev  (standard deviation)
+
+All the functions in this module follow the simple format of accepting
+a sequence of `float`s, the data of which to get the statistical
+attribute for, and returning a float, the measure of the attribute.
+Some functions may require/offer extra arguments to define
+characteristic of the measured attribute.
+"""
+
 import math
 from typing import Sequence
 
@@ -5,8 +20,6 @@ from typing import Sequence
 def mean(data: Sequence[float]) -> float:
     """
     Get the arithmetic mean of a sequence of numbers.
-    :param data: the `Sequence` of which to get the mean of.
-    :return: a `float`, the mean of the sequence `data`.
     """
 
     assert len(data) > 0
@@ -17,9 +30,6 @@ def mean(data: Sequence[float]) -> float:
 def stddev(data: Sequence[float]) -> float:
     """
     Get the standard deviation of a sequence of numbers.
-    :param data: the `Sequence` of which to get the standard deviation
-        of.
-    :return: a `float`, the standard deviation of the sequence `data`.
     """
 
     assert len(data) > 0
