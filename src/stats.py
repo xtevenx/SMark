@@ -18,22 +18,28 @@ import math
 from typing import Sequence
 
 
+def _assert_valid_sequence(foo):
+    def _decorated(data: Sequence[float], **kwargs) -> float:
+        assert len(data) > 0 and all(type(x) == float for x in data)
+        return foo(data, **kwargs)
+
+    return _decorated
+
+
+@_assert_valid_sequence
 def mean(data: Sequence[float]) -> float:
     """
     Get the arithmetic mean of a sequence of numbers.
     """
 
-    assert len(data) > 0
-
     return sum(data) / len(data)
 
 
+@_assert_valid_sequence
 def median(data: Sequence[float]) -> float:
     """
     Get the median of a sequence of numbers.
     """
-
-    assert len(data) > 0
 
     midpoint_index, r = divmod(len(data), 2)
     if r:
@@ -42,12 +48,11 @@ def median(data: Sequence[float]) -> float:
         return (data[midpoint_index - 1] + data[midpoint_index]) / 2
 
 
+@_assert_valid_sequence
 def stddev(data: Sequence[float]) -> float:
     """
     Get the standard deviation of a sequence of numbers.
     """
-
-    assert len(data) > 0
 
     mu = mean(data)
     return math.sqrt(sum((n - mu) ** 2 for n in data) / len(data))
