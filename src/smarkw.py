@@ -109,26 +109,26 @@ class MainWindow(tk.Tk):
             self, text="Arithmetic mean:", anchor="w", **self._stats_configs)
         self.unscaled_mean_label.grid(column=0, row=3, sticky="nsew")
 
-        self.unscaled_stddev_label = tk.Label(
-            self, text="Standard deviation:", anchor="w", **self._stats_configs)
-        self.unscaled_stddev_label.grid(column=0, row=4, sticky="nsew")
+        self.unscaled_median_label = tk.Label(
+            self, text="Median:", anchor="w", **self._stats_configs)
+        self.unscaled_median_label.grid(column=0, row=4, sticky="nsew")
 
         self.scaled_mean_label = tk.Label(
             self, text="Arithmetic mean (%):", anchor="w", **self._stats_configs)
         self.scaled_mean_label.grid(column=2, row=3, sticky="nsew")
 
-        self.scaled_stddev_label = tk.Label(
-            self, text="Standard deviation:", anchor="w", **self._stats_configs)
-        self.scaled_stddev_label.grid(column=2, row=4, sticky="nsew")
+        self.scaled_median_label = tk.Label(
+            self, text="Median:", anchor="w", **self._stats_configs)
+        self.scaled_median_label.grid(column=2, row=4, sticky="nsew")
 
         # create the statistics display (and input) boxes
         self.unscaled_mean_display = tk.Label(
             self, text="undefined", anchor="e", **self._stats_configs)
         self.unscaled_mean_display.grid(column=1, row=3, sticky="nsew")
 
-        self.unscaled_stddev_display = tk.Label(
+        self.unscaled_median_display = tk.Label(
             self, text="undefined", anchor="e", **self._stats_configs)
-        self.unscaled_stddev_display.grid(column=1, row=4, sticky="nsew")
+        self.unscaled_median_display.grid(column=1, row=4, sticky="nsew")
 
         self.scaled_mean = tk.StringVar()
         self.scaled_mean.trace("w", lambda *a: self.do_scaling())
@@ -137,9 +137,9 @@ class MainWindow(tk.Tk):
         self.scaled_mean_input.insert(0, "70.0")
         self.scaled_mean_input.grid(column=3, row=3, padx=10, sticky="ew")
 
-        self.scaled_stddev_display = tk.Label(
+        self.scaled_median_display = tk.Label(
             self, text="undefined", anchor="e", **self._stats_configs)
-        self.scaled_stddev_display.grid(column=3, row=4, sticky="nsew")
+        self.scaled_median_display.grid(column=3, row=4, sticky="nsew")
 
         # final widget positioning tweaks
         self.grid_columnconfigure(0, weight=1)
@@ -176,8 +176,8 @@ class MainWindow(tk.Tk):
             self.scaled_display.config(state="disabled")
 
             self.unscaled_mean_display.config(text="undefined")
-            self.unscaled_stddev_display.config(text="undefined")
-            self.scaled_stddev_display.config(text="undefined")
+            self.unscaled_median_display.config(text="undefined")
+            self.scaled_median_display.config(text="undefined")
             return
 
         scaled_data, _ = scale.scale(input_data, scaled_mean, scale.inverse_power_scale)
@@ -191,15 +191,15 @@ class MainWindow(tk.Tk):
 
         if self.use_percentages.get():
             self.unscaled_mean_display.config(text=f"{100 * stats.mean(input_data):.2f}%")
-            self.unscaled_stddev_display.config(text=f"{100 * stats.stddev(input_data):.2f}%")
-            self.scaled_stddev_display.config(text=f"{100 * stats.stddev(scaled_data):.2f}%")
+            self.unscaled_median_display.config(text=f"{100 * stats.median(input_data):.2f}%")
+            self.scaled_median_display.config(text=f"{100 * stats.median(scaled_data):.2f}%")
         else:
             self.unscaled_mean_display.config(
                 text=f"{assignment_total * stats.mean(input_data):.1f}")
-            self.unscaled_stddev_display.config(
-                text=f"{assignment_total * stats.stddev(input_data):.1f}")
-            self.scaled_stddev_display.config(
-                text=f"{assignment_total * stats.stddev(scaled_data):.1f}")
+            self.unscaled_median_display.config(
+                text=f"{assignment_total * stats.median(input_data):.1f}")
+            self.scaled_median_display.config(
+                text=f"{assignment_total * stats.median(scaled_data):.1f}")
 
 
 class ResponsiveText(ModifiedMixin, ScrolledText):

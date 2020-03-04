@@ -4,6 +4,7 @@ attribute from a set of data.
 
   This module currently contains the following functions:
 * mean  (arithmetic mean)
+* median  (median)
 * stddev  (standard deviation)
 
 All the functions in this module follow the simple format of accepting
@@ -25,6 +26,20 @@ def mean(data: Sequence[float]) -> float:
     assert len(data) > 0
 
     return sum(data) / len(data)
+
+
+def median(data: Sequence[float]) -> float:
+    """
+    Get the median of a sequence of numbers.
+    """
+
+    assert len(data) > 0
+
+    midpoint_index, r = divmod(len(data), 2)
+    if r:
+        return data[midpoint_index]
+    else:
+        return (data[midpoint_index - 1] + data[midpoint_index]) / 2
 
 
 def stddev(data: Sequence[float]) -> float:
