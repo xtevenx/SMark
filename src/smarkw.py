@@ -58,6 +58,12 @@ class MainWindow(tk.Tk):
         _input_configs = {**self._widget_configs, **self._input_configs}
         _stats_configs = {**self._widget_configs, **self._stats_configs}
 
+        # initiate a `tkinter.Frame` object to store all the widgets
+        # in. this is required to make all the contents of the window
+        # to be scrollable.
+        self.frame = tk.Frame(self, **self._window_configs)
+        self.frame.grid(column=0, row=0, sticky="nsew")
+
         # configure the general window attributes
         self.title("SMark Grade Scale Utility")
         self.configure(self._window_configs)
@@ -66,87 +72,91 @@ class MainWindow(tk.Tk):
         self.minsize(width=720, height=400)
 
         # create the labels
-        self.unscaled_label = tk.Label(self, text="Unscaled marks:", **_label_configs)
+        self.unscaled_label = tk.Label(self.frame, text="Unscaled marks:", **_label_configs)
         self.unscaled_label.grid(column=0, row=0, columnspan=2, sticky="nsew")
 
-        self.scaled_label = tk.Label(self, text="Scaled marks:", **_label_configs)
+        self.scaled_label = tk.Label(self.frame, text="Scaled marks:", **_label_configs)
         self.scaled_label.grid(column=2, row=0, columnspan=2, sticky="nsew")
 
         # create the input and display text boxes
         self.unscaled_input = ResponsiveText(
-            self, callback=self.do_scaling, **_input_configs)
+            self.frame, callback=self.do_scaling, **_input_configs)
         self.unscaled_input.grid(column=0, row=1, columnspan=2, sticky="nsew")
 
-        self.scaled_display = ScrolledText(self, state="disabled", **_input_configs)
+        self.scaled_display = ScrolledText(self.frame, state="disabled", **_input_configs)
         self.scaled_display.grid(column=2, row=1, columnspan=2, sticky="nsew")
 
         # create assignment total input
         self.assignment_total_label = tk.Label(
-            self, text="Assignment total:", anchor="w", **_stats_configs)
+            self.frame, text="Assignment total:", anchor="w", **_stats_configs)
         self.assignment_total_label.grid(column=0, row=2, sticky="nsew")
 
         self.assignment_total = tk.StringVar()
         self.assignment_total.trace("w", lambda *a: self.do_scaling())
         self.assignment_total_input = tk.Entry(
-            self, justify=tk.RIGHT, textvariable=self.assignment_total, **_input_configs)
+            self.frame, justify=tk.RIGHT, textvariable=self.assignment_total, **_input_configs)
         self.assignment_total_input.insert(0, "20")
         self.assignment_total_input.grid(column=1, row=2, padx=10, sticky="ew")
 
         # create unit and copy buttons
         self.use_percentages = tk.BooleanVar()
         self.unit_button = tk.Checkbutton(
-            self, text="Display percentages", variable=self.use_percentages, anchor="w",
+            self.frame, text="Display percentages", variable=self.use_percentages, anchor="w",
             command=self.do_scaling, **_stats_configs)
         self.unit_button.select()
         self.unit_button.grid(column=2, row=2, sticky="nsew")
 
         self.copy_button = tk.Button(
-            self, text="Copy to clipboard", command=self.copy_to_clipboard, **_stats_configs)
+            self.frame, text="Copy to clipboard", command=self.copy_to_clipboard,
+            **_stats_configs)
         self.copy_button.grid(column=3, row=2, padx=10, sticky="nsew")
 
         # create the statistics display labels
         self.unscaled_mean_label = tk.Label(
-            self, text="Arithmetic mean:", anchor="w", **_stats_configs)
+            self.frame, text="Arithmetic mean:", anchor="w", **_stats_configs)
         self.unscaled_mean_label.grid(column=0, row=3, sticky="nsew")
 
         self.unscaled_median_label = tk.Label(
-            self, text="Median:", anchor="w", **_stats_configs)
+            self.frame, text="Median:", anchor="w", **_stats_configs)
         self.unscaled_median_label.grid(column=0, row=4, sticky="nsew")
 
         self.scaled_mean_label = tk.Label(
-            self, text="Arithmetic mean (%):", anchor="w", **_stats_configs)
+            self.frame, text="Arithmetic mean (%):", anchor="w", **_stats_configs)
         self.scaled_mean_label.grid(column=2, row=3, sticky="nsew")
 
         self.scaled_median_label = tk.Label(
-            self, text="Median:", anchor="w", **_stats_configs)
+            self.frame, text="Median:", anchor="w", **_stats_configs)
         self.scaled_median_label.grid(column=2, row=4, sticky="nsew")
 
         # create the statistics display (and input) boxes
         self.unscaled_mean_display = tk.Label(
-            self, text="undefined", anchor="e", **_stats_configs)
+            self.frame, text="undefined", anchor="e", **_stats_configs)
         self.unscaled_mean_display.grid(column=1, row=3, sticky="nsew")
 
         self.unscaled_median_display = tk.Label(
-            self, text="undefined", anchor="e", **_stats_configs)
+            self.frame, text="undefined", anchor="e", **_stats_configs)
         self.unscaled_median_display.grid(column=1, row=4, sticky="nsew")
 
         self.scaled_mean = tk.StringVar()
         self.scaled_mean.trace("w", lambda *a: self.do_scaling())
         self.scaled_mean_input = tk.Entry(
-            self, justify=tk.RIGHT, textvariable=self.scaled_mean, **_input_configs)
+            self.frame, justify=tk.RIGHT, textvariable=self.scaled_mean, **_input_configs)
         self.scaled_mean_input.insert(0, "70.0")
         self.scaled_mean_input.grid(column=3, row=3, padx=10, sticky="ew")
 
         self.scaled_median_display = tk.Label(
-            self, text="undefined", anchor="e", **_stats_configs)
+            self.frame, text="undefined", anchor="e", **_stats_configs)
         self.scaled_median_display.grid(column=3, row=4, sticky="nsew")
 
-        # final widget positioning tweaks
+        # final widget sizing tweaks
         self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_columnconfigure(2, weight=1)
-        self.grid_columnconfigure(3, weight=1)
-        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+
+        self.frame.grid_columnconfigure(0, weight=1)
+        self.frame.grid_columnconfigure(1, weight=1)
+        self.frame.grid_columnconfigure(2, weight=1)
+        self.frame.grid_columnconfigure(3, weight=1)
+        self.frame.grid_rowconfigure(1, weight=1)
 
         # flag for when finished building init
         self._FINISHED_INIT = True
