@@ -38,6 +38,29 @@ def log_scale(data: List[float], power: float) -> List[float]:
 
 
 def power_scale(data: List[float], power: float) -> List[float]:
+    """
+    Scale a sequence of numbers based on the `power_scale` method.
+
+    The `power_scale` method is a variable tweak of the commonly used
+    scaling method where one scales a score, 'n' {0 <= n <= 100}, by
+    multiplying the square root of 'n' by a factor of 10, namely:
+
+        n_{scaled} = 10 * (n_{original} ** (1/2))
+
+    The `power_scale` allows the variation of the exponent (in the
+    example, `1/2`) to achieve variable scaling rates.
+
+    :param data: the sequence of floats of which to scale.
+    :param power: the scaling factor. A number lower than one results
+        in the numbers of the sequence being scaled upwards where a
+        lower number represents more scaling. A number higher than one
+        results in the numbers being scaled downwards where a higher
+        number represents more scaling.
+    :return: the sequence of numbers after scaling. The numbers in the
+        sequence remain in the original order as they were given and
+        the `data` is not modified.
+    """
+
     return [n ** (1 / power) for n in data]
 
 
