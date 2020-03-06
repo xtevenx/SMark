@@ -180,7 +180,11 @@ class MainWindow(tk.Tk):
             self.scaled_median_display.config(text="undefined")
             return
 
-        scaled_data, _ = scale.scale(input_data, scaled_mean, scale.inverse_power_scale)
+        scale_foo = (
+            scale.inverse_power_scale if stats.mean(input_data) < scaled_mean else
+            scale.power_scale
+        )
+        scaled_data, _ = scale.scale(input_data, scaled_mean, scale_foo)
 
         self.scaled_display.config(state="normal")
         self.scaled_display.delete("1.0", tk.END)
