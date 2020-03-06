@@ -54,9 +54,9 @@ class MainWindow(tk.Tk):
         self._init()
 
     def _init(self):
-        self._label_configs = {**self._widget_configs, **self._label_configs}
-        self._input_configs = {**self._widget_configs, **self._input_configs}
-        self._stats_configs = {**self._widget_configs, **self._stats_configs}
+        _label_configs = {**self._widget_configs, **self._label_configs}
+        _input_configs = {**self._widget_configs, **self._input_configs}
+        _stats_configs = {**self._widget_configs, **self._stats_configs}
 
         # configure the general window attributes
         self.title("SMark Grade Scale Utility")
@@ -66,29 +66,29 @@ class MainWindow(tk.Tk):
         self.minsize(width=720, height=400)
 
         # create the labels
-        self.unscaled_label = tk.Label(self, text="Unscaled marks:", **self._label_configs)
+        self.unscaled_label = tk.Label(self, text="Unscaled marks:", **_label_configs)
         self.unscaled_label.grid(column=0, row=0, columnspan=2, sticky="nsew")
 
-        self.scaled_label = tk.Label(self, text="Scaled marks:", **self._label_configs)
+        self.scaled_label = tk.Label(self, text="Scaled marks:", **_label_configs)
         self.scaled_label.grid(column=2, row=0, columnspan=2, sticky="nsew")
 
         # create the input and display text boxes
         self.unscaled_input = ResponsiveText(
-            self, callback=self.do_scaling, **self._input_configs)
+            self, callback=self.do_scaling, **_input_configs)
         self.unscaled_input.grid(column=0, row=1, columnspan=2, sticky="nsew")
 
-        self.scaled_display = ScrolledText(self, state="disabled", **self._input_configs)
+        self.scaled_display = ScrolledText(self, state="disabled", **_input_configs)
         self.scaled_display.grid(column=2, row=1, columnspan=2, sticky="nsew")
 
         # create assignment total input
         self.assignment_total_label = tk.Label(
-            self, text="Assignment total:", anchor="w", **self._stats_configs)
+            self, text="Assignment total:", anchor="w", **_stats_configs)
         self.assignment_total_label.grid(column=0, row=2, sticky="nsew")
 
         self.assignment_total = tk.StringVar()
         self.assignment_total.trace("w", lambda *a: self.do_scaling())
         self.assignment_total_input = tk.Entry(
-            self, justify=tk.RIGHT, textvariable=self.assignment_total, **self._input_configs)
+            self, justify=tk.RIGHT, textvariable=self.assignment_total, **_input_configs)
         self.assignment_total_input.insert(0, "20")
         self.assignment_total_input.grid(column=1, row=2, padx=10, sticky="ew")
 
@@ -96,49 +96,49 @@ class MainWindow(tk.Tk):
         self.use_percentages = tk.BooleanVar()
         self.unit_button = tk.Checkbutton(
             self, text="Display percentages", variable=self.use_percentages, anchor="w",
-            command=self.do_scaling, **self._stats_configs)
+            command=self.do_scaling, **_stats_configs)
         self.unit_button.select()
         self.unit_button.grid(column=2, row=2, sticky="nsew")
 
         self.copy_button = tk.Button(
-            self, text="Copy to clipboard", command=self.copy_to_clipboard, **self._stats_configs)
+            self, text="Copy to clipboard", command=self.copy_to_clipboard, **_stats_configs)
         self.copy_button.grid(column=3, row=2, padx=10, sticky="nsew")
 
         # create the statistics display labels
         self.unscaled_mean_label = tk.Label(
-            self, text="Arithmetic mean:", anchor="w", **self._stats_configs)
+            self, text="Arithmetic mean:", anchor="w", **_stats_configs)
         self.unscaled_mean_label.grid(column=0, row=3, sticky="nsew")
 
         self.unscaled_median_label = tk.Label(
-            self, text="Median:", anchor="w", **self._stats_configs)
+            self, text="Median:", anchor="w", **_stats_configs)
         self.unscaled_median_label.grid(column=0, row=4, sticky="nsew")
 
         self.scaled_mean_label = tk.Label(
-            self, text="Arithmetic mean (%):", anchor="w", **self._stats_configs)
+            self, text="Arithmetic mean (%):", anchor="w", **_stats_configs)
         self.scaled_mean_label.grid(column=2, row=3, sticky="nsew")
 
         self.scaled_median_label = tk.Label(
-            self, text="Median:", anchor="w", **self._stats_configs)
+            self, text="Median:", anchor="w", **_stats_configs)
         self.scaled_median_label.grid(column=2, row=4, sticky="nsew")
 
         # create the statistics display (and input) boxes
         self.unscaled_mean_display = tk.Label(
-            self, text="undefined", anchor="e", **self._stats_configs)
+            self, text="undefined", anchor="e", **_stats_configs)
         self.unscaled_mean_display.grid(column=1, row=3, sticky="nsew")
 
         self.unscaled_median_display = tk.Label(
-            self, text="undefined", anchor="e", **self._stats_configs)
+            self, text="undefined", anchor="e", **_stats_configs)
         self.unscaled_median_display.grid(column=1, row=4, sticky="nsew")
 
         self.scaled_mean = tk.StringVar()
         self.scaled_mean.trace("w", lambda *a: self.do_scaling())
         self.scaled_mean_input = tk.Entry(
-            self, justify=tk.RIGHT, textvariable=self.scaled_mean, **self._input_configs)
+            self, justify=tk.RIGHT, textvariable=self.scaled_mean, **_input_configs)
         self.scaled_mean_input.insert(0, "70.0")
         self.scaled_mean_input.grid(column=3, row=3, padx=10, sticky="ew")
 
         self.scaled_median_display = tk.Label(
-            self, text="undefined", anchor="e", **self._stats_configs)
+            self, text="undefined", anchor="e", **_stats_configs)
         self.scaled_median_display.grid(column=3, row=4, sticky="nsew")
 
         # final widget positioning tweaks
