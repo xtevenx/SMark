@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter.scrolledtext import ScrolledText
 
 from lib.ModifiedMixin import ModifiedMixin
+from lib.CanvasFrame import CanvasFrame
 
 import scale
 import stats
@@ -30,8 +31,15 @@ _COLORS = {
 
 
 class MainWindow(tk.Tk):
-    _window_configs = {
-        "bg": _COLORS["background"],
+    # window configuration variables.
+    _input_configs = {}
+
+    _label_configs = {
+        "font": ("Monaco", 12),
+    }
+
+    _stats_configs = {
+        "padx": 10,
     }
 
     _widget_configs = {
@@ -39,15 +47,13 @@ class MainWindow(tk.Tk):
         "font": ("Monaco", 10),
     }
 
-    _label_configs = {
-        "font": ("Monaco", 12),
+    _window_configs = {
+        "bg": _COLORS["background"],
     }
 
-    _input_configs = {}
-
-    _stats_configs = {
-        "padx": 10,
-    }
+    # window geometry variables.
+    _initial_width: int = 720
+    _initial_height: int = 400
 
     def __init__(self):
         super().__init__()
@@ -58,18 +64,19 @@ class MainWindow(tk.Tk):
         _input_configs = {**self._widget_configs, **self._input_configs}
         _stats_configs = {**self._widget_configs, **self._stats_configs}
 
-        # initiate a `tkinter.Frame` object to store all the widgets
-        # in. this is required to make all the contents of the window
-        # to be scrollable.
-        self.frame = tk.Frame(self, **self._window_configs)
-        self.frame.grid(column=0, row=0, sticky="nsew")
+        # initiate a `tkinter.Canvas -> tkinter.Frame` object to store
+        # all the widgets in. this is required to make all the contents
+        # in the window scrollable.
+        self.canvas_frame = CanvasFrame(
+            self, width=self._initial_width, height=self._initial_height, **self._window_configs)
+        self.frame = self.canvas_frame.frame
 
         # configure the general window attributes
         self.title("SMark Grade Scale Utility")
         self.configure(self._window_configs)
 
-        self.geometry("720x400")
-        self.minsize(width=720, height=400)
+        self.geometry(f"{self._initial_width}x{self._initial_height}")
+        self.minsize(width=self._initial_width, height=self._initial_height)
 
         # create the labels
         self.unscaled_label = tk.Label(self.frame, text="Unscaled marks:", **_label_configs)
@@ -157,6 +164,20 @@ class MainWindow(tk.Tk):
         self.frame.grid_columnconfigure(2, weight=1)
         self.frame.grid_columnconfigure(3, weight=1)
         self.frame.grid_rowconfigure(1, weight=1)
+
+        # wrap `self.frame` in `self.canvas_frame` to display it.
+        self.scrollbar = tk.Scrollbar(
+            self, orient="vertical", command=self.canvas_frame.yview, **self._window_configs)
+
+        self.canvas_frame.create_window(
+            0, 0, anchor="nw", width=self._initial_width, height=self._initial_height,
+            window=self.frame)
+        self.canvas_frame.configure(
+            scrollregion=self.canvas_frame.bbox('all'), yscrollcommand=self.scrollbar.set)
+        self.canvas_frame.update_idletasks()
+
+        self.canvas_frame.grid(column=0, row=0, sticky="nsew")
+        self.scrollbar.grid(column=1, row=0, sticky="nsew")
 
         # flag for when finished building init
         self._FINISHED_INIT = True
