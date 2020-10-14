@@ -1,50 +1,38 @@
-def display_info(data):
-    print("Highest score > {:.2f}".format(max([n * total_score for n in data])))
-    print("Lowest score > {:.2f}".format(min([n * total_score for n in data])))
-    print("Highest percentage > {:.2f}%".format(max([n * 100 for n in data])))
-    print("Lowest percentage > {:.2f}%".format(min([n * 100 for n in data])))
-    print()
+if __name__ != "__main__":
+    print("Error: SMark is a standalone script.")
+    exit(0)
 
-    print("Average (mean) score > {:.2f}".format(
-        stats.mean([n * total_score for n in data])
-    ))
-    print("Score standard deviation > {:.2f}".format(
-        stats.stddev([n * total_score for n in data])
-    ))
-    print("Average (mean) percentage > {:.2f}%".format(
-        stats.mean([n * 100 for n in data])
-    ))
-    print("Percentage standard deviation > {:.2f}%".format(
-        stats.stddev([n * 100 for n in data])
-    ))
+import display
+import scale
+import stats
 
+display.display_header("SMark Grade Scale Utility")
 
-if __name__ == "__main__":
-    import scale
-    import stats
+print()
+total_score = float(input("What is the assignment out of> "))
 
-    print("SMark Grade Scale Utility", end=2 * "\n")
-    total_score = float(input("What is the assignment out of? "))
+print()
+print("Enter the individual scores below (one on each line). Enter an empty \n"
+      "line after the last input:")
 
-    print("Enter the individual scores below (one on each line). Enter an empty \n"
-          "line after the last input:")
-    inputs = []
+inputs = []
+try:
     while True:
-        try:
-            inputs.append(float(input()) / total_score)
-        except (ValueError, EOFError):
-            break
+        inputs.append(float(input()) / total_score)
+except (ValueError, EOFError):
+    ...
 
-    display_info(inputs)
+display.display_info(inputs, total_score, header="input data statistics")
 
-    print("\n" + "-" * 72 + "\n")
-    scale_mean = float(input("What is the target average (mean) percentage? ")) / 100
-    scale_f = scale.inverse_power_scale if scale_mean > stats.mean(inputs) else scale.power_scale
-    print()
+print()
+scale_mean = float(input("What is the target average (mean) percentage (0-100)> ")) / 100
 
-    outputs, sf = scale.scale(inputs, scale_mean, scale_f)
-    print("Below are the scaled scores (in the order they were entered):")
-    print("\n".join("{:.2f}".format(total_score * n) for n in outputs))
-    print()
+scale_func = scale.inverse_power_scale if scale_mean > stats.mean(inputs) else scale.power_scale
+outputs, _ = scale.scale(inputs, scale_mean, scale_func)
 
-    display_info(outputs)
+print()
+print("Below are the scaled scores (in the order they were entered):")
+print("\n".join("{:.2f}".format(total_score * n) for n in outputs))
+
+print()
+display.display_info(outputs, total_score, header="output data statistics")
