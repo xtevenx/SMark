@@ -45,3 +45,18 @@ def _format_line(left_side: str = "", right_side: str = "") -> str:
     left_only = _LINE_FORMAT.format(left=left_side, right="")
     right_side = right_side.rjust(_DISPLAY_WIDTH - len(left_only))
     return _LINE_FORMAT.format(left=left_side, right=right_side)
+
+
+# Other utility functions ---------------------------------------------
+
+def input_float(prompt: str = "",
+                qualifier=lambda v: True,
+                qualifier_err: str = "Error: please check that the input is correct."
+                ) -> float:
+    while val := input(prompt).strip():
+        try:
+            if qualifier(val := float(val)):
+                return val
+            print(qualifier_err)
+        except ValueError:
+            print("Error: could not parse the input.")

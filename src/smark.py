@@ -11,7 +11,11 @@ import stats
 display.display_header("SMark Grade Scale Utility")
 
 print()
-total_score = float(input("What is the assignment out of> "))
+total_score = display.input_float(
+    prompt="What is the assignment out of> ",
+    qualifier=lambda x: x > 0,
+    qualifier_err="Error: please input a positive number."
+)
 
 print()
 print("Enter the individual scores below (one on each line). Enter an empty \n"
@@ -21,13 +25,14 @@ inputs = []
 try:
     while this_input := input().strip():
         decimal_input = float(this_input) / total_score
-        assert 0 <= decimal_input <= 1
+        if not 0 <= decimal_input <= 1:
+            raise AssertionError
         inputs.append(decimal_input)
 
 except ValueError:
     ordinals = ["st", "nd", "rd"] + ["th"] * 7
     formatted_num = f"{len(inputs) + 1}{ordinals[len(inputs) % 10]}"
-    print(f"Error: the {formatted_num} input was unable to be parsed.")
+    print(f"Error: could not parse the {formatted_num} input.")
     sys.exit(1)
 
 except AssertionError:
@@ -39,8 +44,11 @@ except AssertionError:
 display.display_info(inputs, total_score, header="input data statistics")
 
 print()
-scale_mean = float(input("What is the target average (mean) percentage (0 - 100)> ")) / 100
-assert 0 <= scale_mean <= 1, "Error: the target average (mean) is not in range (0 - 100)."
+scale_mean = display.input_float(
+    prompt="What is the target average (mean) percentage (0 - 100)> ",
+    qualifier=lambda x: 0 <= x <= 100,
+    qualifier_err="Error: please input a number between 0 and 100."
+) / 100
 
 scale_func = scale.inverse_power_scale if scale_mean > stats.mean(inputs) else scale.power_scale
 outputs, _ = scale.scale(inputs, scale_mean, scale_func)
