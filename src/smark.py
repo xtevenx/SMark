@@ -1,6 +1,8 @@
+import sys
+
 if __name__ != "__main__":
     print("Error: SMark is a standalone script.")
-    exit(1)
+    sys.exit(1)
 
 import display
 import scale
@@ -26,13 +28,13 @@ except ValueError:
     ordinals = ["st", "nd", "rd"] + ["th"] * 7
     formatted_num = f"{len(inputs) + 1}{ordinals[len(inputs) % 10]}"
     print(f"Error: the {formatted_num} input was unable to be parsed.")
-    exit(1)
+    sys.exit(1)
 
 except AssertionError:
     ordinals = ["st", "nd", "rd"] + ["th"] * 7
     formatted_num = f"{len(inputs) + 1}{ordinals[len(inputs) % 10]}"
     print(f"Error: the {formatted_num} input is not in range (0 - {total_score}).")
-    exit(1)
+    sys.exit(1)
 
 display.display_info(inputs, total_score, header="input data statistics")
 
