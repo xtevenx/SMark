@@ -38,6 +38,7 @@ except ValueError:
 except AssertionError:
     ordinals = ["st", "nd", "rd"] + ["th"] * 7
     formatted_num = f"{len(inputs) + 1}{ordinals[len(inputs) % 10]}"
+    total_score = int(total_score) if round(total_score) == total_score else total_score
     print(f"Error: the {formatted_num} input is not in range (0 - {total_score}).")
     sys.exit(1)
 
