@@ -1,3 +1,4 @@
+from typing import Sequence
 import statistics
 
 _DISPLAY_WIDTH: int = 72
@@ -5,7 +6,7 @@ _DISPLAY_WIDTH: int = 72
 
 # Headers display -----------------------------------------------------
 
-def display_header(header: str):
+def display_header(header: str) -> None:
     print(f"-> {header} <-".center(_DISPLAY_WIDTH, "-"))
 
 
@@ -13,10 +14,10 @@ def display_header(header: str):
 
 _CENTER_FORMAT: str = "| {} |"
 _LINE_FORMAT: str = "| {left}{right} |"
-_NUM_FORMAT = "{:.2f}"
+_NUM_FORMAT: str = "{:.2f}"
 
 
-def display_info(data, total_score, header="data statistics"):
+def display_info(data: Sequence[float], total_score: float, header: str = "data statistics"):
     scores = tuple(n * total_score for n in data)
     percents = tuple(n * 100 for n in data)
 
