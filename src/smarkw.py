@@ -5,7 +5,7 @@ from lib.ModifiedMixin import ModifiedMixin
 from lib.CanvasFrame import CanvasFrame
 
 import scale
-import stats
+import statistics
 
 # Values are copied from Atom's "One Light" color scheme.
 _COLORS = {
@@ -212,7 +212,7 @@ class MainWindow(tk.Tk):
             return
 
         scale_foo = (
-            scale.inverse_power_scale if stats.mean(input_data) < scaled_mean else
+            scale.inverse_power_scale if statistics.mean(input_data) < scaled_mean else
             scale.power_scale
         )
         scaled_data, _ = scale.scale(input_data, scaled_mean, scale_foo)
@@ -225,16 +225,16 @@ class MainWindow(tk.Tk):
         self.scaled_display.config(state="disabled")
 
         if self.use_percentages.get():
-            self.unscaled_mean_display.config(text=f"{100 * stats.mean(input_data):.2f}%")
-            self.unscaled_median_display.config(text=f"{100 * stats.median(input_data):.2f}%")
-            self.scaled_median_display.config(text=f"{100 * stats.median(scaled_data):.2f}%")
+            self.unscaled_mean_display.config(text=f"{100 * statistics.mean(input_data):.2f}%")
+            self.unscaled_median_display.config(text=f"{100 * statistics.median(input_data):.2f}%")
+            self.scaled_median_display.config(text=f"{100 * statistics.median(scaled_data):.2f}%")
         else:
             self.unscaled_mean_display.config(
-                text=f"{assignment_total * stats.mean(input_data):.1f}")
+                text=f"{assignment_total * statistics.mean(input_data):.1f}")
             self.unscaled_median_display.config(
-                text=f"{assignment_total * stats.median(input_data):.1f}")
+                text=f"{assignment_total * statistics.median(input_data):.1f}")
             self.scaled_median_display.config(
-                text=f"{assignment_total * stats.median(scaled_data):.1f}")
+                text=f"{assignment_total * statistics.median(scaled_data):.1f}")
 
 
 class ResponsiveText(ModifiedMixin, ScrolledText):

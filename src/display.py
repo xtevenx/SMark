@@ -1,4 +1,4 @@
-import stats
+import statistics
 
 _DISPLAY_WIDTH: int = 72
 
@@ -25,13 +25,13 @@ def display_info(data, total_score, header="data statistics"):
     print(_format_line())
     print(_format_line("Maximum score:", _NUM_FORMAT.format(max(scores))))
     print(_format_line("Minimum score:", _NUM_FORMAT.format(min(scores))))
-    print(_format_line("Average (mean) score:", _NUM_FORMAT.format(stats.mean(scores))))
-    print(_format_line("Scores standard deviation:", _NUM_FORMAT.format(stats.stddev(scores))))
+    print(_format_line("Average (mean) score:", _NUM_FORMAT.format(statistics.mean(scores))))
+    print(_format_line("Scores standard deviation:", _NUM_FORMAT.format(statistics.stdev(scores))))
     print(_format_line())
     print(_format_line("Maximum percentage:", f"{_NUM_FORMAT.format(max(percents))}%"))
     print(_format_line("Minimum percentage:", f"{_NUM_FORMAT.format(min(percents))}%"))
-    print(_format_line("Average (mean) percentage:", f"{_NUM_FORMAT.format(stats.mean(percents))}%"))
-    print(_format_line("Percentages standard deviation:", f"{_NUM_FORMAT.format(stats.stddev(percents))}%"))
+    print(_format_line("Average (mean) percentage:", f"{_NUM_FORMAT.format(statistics.mean(percents))}%"))
+    print(_format_line("Percentages standard deviation:", f"{_NUM_FORMAT.format(statistics.stdev(percents))}%"))
     print("-" * _DISPLAY_WIDTH)
 
 

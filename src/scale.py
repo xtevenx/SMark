@@ -1,7 +1,7 @@
 import math
 from typing import Callable, List, Sequence
 
-import stats
+import statistics
 
 _SCALE_FUNCTION = Callable[[Sequence[float], float], List[float]]
 
@@ -12,7 +12,7 @@ def scale(data: Sequence[float], target: float, scale_func: _SCALE_FUNCTION
     assert 0 <= target <= 1
 
     def scale_result(n: float) -> float:
-        return stats.mean(scale_func(data, n))
+        return statistics.mean(scale_func(data, n))
 
     scale_factor = _binary_search(
         lower_bound=0, upper_bound=2 ** 64, target=target, func=scale_result

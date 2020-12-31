@@ -6,7 +6,7 @@ if __name__ != "__main__":
 
 import display
 import scale
-import stats
+import statistics
 
 display.display_header("SMark Grade Scale Utility")
 
@@ -51,7 +51,7 @@ scale_mean = display.input_float(
     qualifier_err="Error: please input a number between 0 and 100."
 ) / 100
 
-scale_func = scale.inverse_power_scale if scale_mean > stats.mean(inputs) else scale.power_scale
+scale_func = scale.inverse_power_scale if scale_mean > statistics.mean(inputs) else scale.power_scale
 outputs, _ = scale.scale(inputs, scale_mean, scale_func)
 
 print()
