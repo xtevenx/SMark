@@ -42,7 +42,7 @@ except AssertionError:
     print(f"Error: the {formatted_num} input is not in range (0 - {total_score}).")
     sys.exit(1)
 
-display.display_info(inputs, total_score, header="input data statistics")
+display.display_info([x * total_score for x in inputs], total_score, header="input data statistics")
 
 print()
 scale_mean = display.input_float(
@@ -59,4 +59,4 @@ print("Below are the scaled scores (in the order they were entered):")
 print("\n".join("{:.2f}".format(total_score * n) for n in outputs))
 
 print()
-display.display_info(outputs, total_score, header="output data statistics")
+display.display_info([x * total_score for x in outputs], total_score, header="output data statistics")
