@@ -1,4 +1,4 @@
-from typing import Optional, Sequence
+from typing import Callable, Optional, Sequence
 import statistics
 
 DISPLAY_WIDTH: int = 72
@@ -19,12 +19,12 @@ def display_header(header: str) -> None:
 def display_info(
         scores: Sequence[float],
         header: Optional[str] = None,
-        total_score: Optional[float] = None
+        total_score: Optional[float] = None,
 ) -> None:
     """Display a box of statistics about a set of scores.
 
-    Displays a formatted message box describing the maximum, minimum,
-    arithmetic mean, and standard deviation for both the scores and
+    Displays a formatted message box to standard output describing the maximum,
+    minimum, arithmetic mean, and standard deviation for both the scores and
     percentages, along with a header at the top.
 
     For example, if the function was called as such::
@@ -104,17 +104,36 @@ def _format_line(left_side: str = "", right_side: str = "") -> str:
 
 # Other utility functions ---------------------------------------------
 
-def input_float(prompt: str = "",
-                qualifier=lambda v: True,
-                qualifier_err: str = "Error: please check that the input is correct."
-                ) -> float:
+def input_float(
+        prompt: str = "",
+        qualifier: Callable[[float], bool] = lambda v: True,
+        qualifier_err: str = "Error: please check that the input is correct.",
+        float_err: str = "Error: could not parse the input.",
+) -> float:
+    """Get a float from the user.
+
+    Prompt the user, then wait for an input from standard input. If the input
+    is not a float or ``qualifier(input)`` is not True, then display an error
+    message and prompt again.
+
+    :param prompt: The string which is used to prompt the user for input.
+    :param qualifier: A function which qualifies whether the float is a valid
+        input. This function accepts one argument, the input float, and outputs
+        True if it is a valid float and False otherwise.
+    :param qualifier_err: The string which is displayed if the input does not
+        pass the qualifier.
+    :param float_err: The string which is displayed if the input could not be
+        converted into a float.
+    :return: A float which also satisfies the qualifier.
+    """
+
     while val := input(prompt).strip():
         try:
             if qualifier(val := float(val)):
                 return val
             print(qualifier_err)
         except ValueError:
-            print("Error: could not parse the input.")
+            print(float_err)
 
 
 # Generate examples for doc-string ------------------------------------
