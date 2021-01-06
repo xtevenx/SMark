@@ -1,5 +1,5 @@
-from typing import Callable, Optional, Sequence
 import statistics
+from typing import Callable, Optional, Sequence
 
 DISPLAY_WIDTH: int = 72
 
