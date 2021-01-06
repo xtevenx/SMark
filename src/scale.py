@@ -14,9 +14,7 @@ def scale(data: Sequence[float], target: float, scale_func: _SCALE_FUNCTION
     def scale_result(n: float) -> float:
         return statistics.mean(scale_func(data, n))
 
-    scale_factor = _binary_search(
-        lower_bound=0, upper_bound=2 ** 64, target=target, func=scale_result
-    )
+    scale_factor = _geometric_binary_search(scale_result, target)
 
     return scale_func(data, scale_factor), scale_factor
 
@@ -66,15 +64,39 @@ def power_scale(data: Sequence[float], power: float) -> List[float]:
     return [n ** (1 / power) for n in data]
 
 
-def _binary_search(lower_bound: float, upper_bound: float, target: float,
-                   func: Callable[[float], float],
-                   precision: float = 2 ** -52,
-                   reverse: bool = False) -> float:
-    assert upper_bound > lower_bound
+def _geometric_binary_search(
+        func: Callable[[float], float],
+        target: float,
+        iterations: int = 24,
+        reverse: bool = False
+) -> float:
+    """Perform a binary search using geometric centers.
 
-    search_iterations = math.log2((upper_bound - lower_bound) / precision)
-    for _ in range(int(search_iterations + 1)):
-        guess = (lower_bound + upper_bound) / 2
+    Do a binary search to find the value ``n`` that makes the function ``func``
+    return ``target`` when ``n`` is used as the argument.
+
+    This implementation of binary search uses the geometric mean instead of the
+    arithmetic mean to determine the center of the search space. This is
+    because the values that are being searched are weighted towards zero.
+
+    :param func: A Callable which accepts a float and returns a float. This
+        must be a one-to-one function.
+    :param target: A float representing the target output which we are trying
+        to make func produce.
+    :param iterations: An integer representing the number of iterations to run
+        the binary search. The default of 24 should be sufficient for most
+        applications.
+    :param reverse:
+    :return: A float representing value n which makes the function func produce
+        target when called as its argument.
+    """
+
+    lower_bound = 2 ** -iterations
+    upper_bound = 2 ** iterations
+    assert lower_bound <= upper_bound
+
+    for _ in range(iterations):
+        guess = math.sqrt(lower_bound * upper_bound)
         answer = func(guess)
 
         if (not reverse and answer > target) or (reverse and answer < target):
@@ -82,4 +104,4 @@ def _binary_search(lower_bound: float, upper_bound: float, target: float,
         else:
             lower_bound = guess
 
-    return (lower_bound + upper_bound) / 2
+    return math.sqrt(lower_bound * upper_bound)
