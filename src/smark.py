@@ -22,6 +22,7 @@ print("Enter the individual scores below (one on each line). Enter an empty \n"
       "line after the last input:")
 
 inputs = []
+
 try:
     while this_input := input().strip():
         decimal_input = float(this_input) / total_score
@@ -42,7 +43,9 @@ except AssertionError:
     print(f"Error: the {formatted_num} input is not in range (0 - {total_score}).")
     sys.exit(1)
 
-display.display_info([x * total_score for x in inputs], total_score=total_score, header="input data statistics")
+display.display_info(
+    [x * total_score for x in inputs], header="input data statistics", total_score=total_score
+)
 
 print()
 scale_mean = display.input_float(
@@ -59,4 +62,6 @@ print("Below are the scaled scores (in the order they were entered):")
 print("\n".join("{:.2f}".format(total_score * n) for n in outputs))
 
 print()
-display.display_info([x * total_score for x in outputs], total_score=total_score, header="output data statistics")
+display.display_info(
+    [x * total_score for x in outputs], header="output data statistics", total_score=total_score
+)
