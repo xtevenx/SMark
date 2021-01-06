@@ -73,7 +73,10 @@ def _geometric_binary_search(
     """Perform a binary search using geometric centers.
 
     Do a binary search to find the value ``n`` that makes the function ``func``
-    return ``target`` when ``n`` is used as the argument.
+    return ``target`` when ``n`` is used as the argument. By default, it is
+    assumed that smaller values of ``n`` will cause ``func`` to produce smaller
+    outputs. If smaller values of ``n`` produce larger outputs, set ``reverse``
+    to True.
 
     This implementation of binary search uses the geometric mean instead of the
     arithmetic mean to determine the center of the search space. This is
@@ -86,7 +89,8 @@ def _geometric_binary_search(
     :param iterations: An integer representing the number of iterations to run
         the binary search. The default of 24 should be sufficient for most
         applications.
-    :param reverse:
+    :param reverse: A bool representing the relationship between the input and
+        output values of func.
     :return: A float representing value n which makes the function func produce
         target when called as its argument.
     """
