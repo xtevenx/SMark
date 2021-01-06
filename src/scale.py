@@ -22,53 +22,49 @@ def scale(data: Sequence[float], target: float, scale_func: _SCALE_FUNCTION
 
 
 def inverse_power_scale(data: Sequence[float], power: float) -> List[float]:
-    """
-    Scale a sequence of numbers based on the `inverse_power_scale`
-    method.
+    """Scale a sequence of numbers based on the ``inverse_power_scale``.
 
-    The `inverse_power_scale` method scales the distribution of
-    numbers inversely proportional to the `power_scale`. While the
-    `power_scale` places more emphasis in scaling the lower values, the
-    `inverse_power_scale` places more emphasis in scaling the higher
-    values. This is beneficial when one wishes to keep the distribution
-    of numbers wide when scaling up.
+    The ``inverse_power_scale`` scales the distribution of numbers inversely
+    proportional to the ``power_scale``. While the ``power_scale`` places more
+    emphasis in scaling the lower values, the ``inverse_power_scale`` places
+    more emphasis in scaling the higher values. This is beneficial when one
+    wishes to keep the distribution of numbers wide when scaling up.
 
-    :param data: the sequence of floats of which to scale.
-    :param power: the scaling factor. A number greater than one results
-        in the numbers of the sequence being scaled upwards where a
-        larger number represents more scaling. A number less than one
-        results in the numbers being scaled downwards where a smaller
-        number represents more scaling.
-    :return: the sequence of numbers after scaling. The numbers in the
-        sequence remain in the original order as they were given and
-        the `data` is not modified.
+    :param data: The sequence of floats to scale.
+    :param power: A float representing the scaling factor. A number greater
+        than one results in the numbers of the sequence being scaled upwards
+        where a larger number represents more scaling. A number less than one
+        results in the numbers being scaled downwards where a smaller number
+        represents more scaling.
+    :return: The sequence of floats after scaling. The floats in the sequence
+        remain in the order they were given and the ``data`` is not modified.
     """
 
     return [1 - (1 - n) ** power for n in data]
 
 
 def power_scale(data: Sequence[float], power: float) -> List[float]:
-    """
-    Scale a sequence of numbers based on the `power_scale` method.
+    """Scale a sequence of numbers based on the ``power_scale``.
 
-    The `power_scale` method is a variable tweak of the commonly used
-    scaling method where one scales a score, 'n' {0 <= n <= 100}, by
-    multiplying the square root of 'n' by a factor of 10, namely:
+    The ``power_scale`` is a variable tweak of the commonly used scaling method
+    where one scales a score, ``n`` {0 <= n <= 100}, by multiplying the square
+    root of ``n`` by a factor of 10, namely:
 
-        n_{scaled} = 10 * (n_{original} ** (1/2))
+    .. math::
 
-    The `power_scale` allows the variation of the exponent (in the
-    example, `1/2`) to achieve variable scaling rates.
+        n_{scaled} = 10 \\left( n_{original} ^ {\\frac{1}{2}} \\right)
 
-    :param data: the sequence of floats of which to scale.
-    :param power: the scaling factor. A number less than one results
-        in the numbers of the sequence being scaled upwards where a
+    The ``power_scale`` allows the variation of the exponent (in the example,
+    :math:`\\frac{1}{2}`) to achieve variable scaling rates.
+
+    :param data: The sequence of floats to scale.
+    :param power: A float representing the scaling factor. A number less than
+        one results in the numbers of the sequence being scaled upwards where a
         smaller number represents more scaling. A number greater than one
-        results in the numbers being scaled downwards where a larger
-        number represents more scaling.
-    :return: the sequence of numbers after scaling. The numbers in the
-        sequence remain in the original order as they were given and
-        the `data` is not modified.
+        results in the numbers being scaled downwards where a larger number
+        represents more scaling.
+    :return: The sequence of floats after scaling. The floats in the sequence
+        remain in the order they were given and the ``data`` is not modified.
     """
 
     return [n ** (1 / power) for n in data]
