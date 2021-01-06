@@ -30,12 +30,10 @@ def inverse_power_scale(data: Sequence[float], power: float) -> List[float]:
     more emphasis in scaling the higher values. This is beneficial when one
     wishes to keep the distribution of numbers wide when scaling up.
 
-    :param data: The sequence of floats to scale.
-    :param power: A float representing the scaling factor. A number greater
-        than one results in the numbers of the sequence being scaled upwards
-        where a larger number represents more scaling. A number less than one
-        results in the numbers being scaled downwards where a smaller number
-        represents more scaling.
+    :param data: The sequence of floats to scale. The floats must be between
+        zero and one, and will also be scaled within that range.
+    :param power: A float representing the scaling factor. A larger number
+        results in more scaling. A scaling factor of 1 has no effect.
     :return: The sequence of floats after scaling. The floats in the sequence
         remain in the order they were given and the ``data`` is not modified.
     """
@@ -57,12 +55,10 @@ def power_scale(data: Sequence[float], power: float) -> List[float]:
     The ``power_scale`` allows the variation of the exponent (in the example,
     :math:`\\frac{1}{2}`) to achieve variable scaling rates.
 
-    :param data: The sequence of floats to scale.
-    :param power: A float representing the scaling factor. A number less than
-        one results in the numbers of the sequence being scaled upwards where a
-        smaller number represents more scaling. A number greater than one
-        results in the numbers being scaled downwards where a larger number
-        represents more scaling.
+    :param data: The sequence of floats to scale. The floats must be between
+        zero and one, and will also be scaled within that range.
+    :param power: A float representing the scaling factor. A larger number
+        results in more scaling. A scaling factor of 1 has no effect.
     :return: The sequence of floats after scaling. The floats in the sequence
         remain in the order they were given and the ``data`` is not modified.
     """
