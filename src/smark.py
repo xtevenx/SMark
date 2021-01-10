@@ -6,7 +6,6 @@ if __name__ != "__main__":
 
 import display
 import scale
-import statistics
 
 display.display_header("SMark Grade Scale Utility")
 
