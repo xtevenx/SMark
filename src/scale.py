@@ -6,17 +6,35 @@ import statistics
 _SCALE_FUNCTION = Callable[[Sequence[float], float], List[float]]
 
 
-def scale(data: Sequence[float], target: float, scale_func: _SCALE_FUNCTION
-          ) -> (List[float], float):
-    assert all(0 <= n <= 1 for n in data)
-    assert 0 <= target <= 1
+def scale(data: Sequence[float], target: float) -> List[float]:
+    """Scale a sequence of numbers to a specific arithmetic mean.
+
+    Output a sequence of numbers (in the range 0 to 1) which have the following
+    properties:
+
+    -   The output sequence is in the same order as the input sequence.
+    -   The values in the sorted input sequence are in the same order as the
+        values in the sorted output sequence. In other words, for all values
+        ``x`` and ``y`` in the input sequence, if ``x`` is less than ``y``,
+        then the scaled value of ``x`` is less than the scaled value of ``y``.
+    -   The arithmetic mean of the values is ``target``.
+
+    :param data: The sequence of floats to scale. All the numbers in this
+        sequence must be between 0 and 1.
+    :param target: A float representing the arithmetic mean of the output
+        sequence. This number must be between 0 and 1.
+    :return: A sequence of floats abiding by the properties described above.
+    """
+
+    assert all(0 <= n <= 1 for n in data) and 0 <= target <= 1
+
+    scale_func = inverse_power_scale if target > statistics.mean(data) else power_scale
 
     def scale_result(n: float) -> float:
         return statistics.mean(scale_func(data, n))
 
     scale_factor = _geometric_binary_search(scale_result, target)
-
-    return scale_func(data, scale_factor), scale_factor
+    return scale_func(data, scale_factor)
 
 
 def inverse_power_scale(data: Sequence[float], power: float) -> List[float]:

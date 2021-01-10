@@ -54,8 +54,7 @@ scale_mean = display.input_float(
     qualifier_err="Error: please input a number between 0 and 100."
 ) / 100
 
-scale_func = scale.inverse_power_scale if scale_mean > statistics.mean(inputs) else scale.power_scale
-outputs, _ = scale.scale(inputs, scale_mean, scale_func)
+outputs = scale.scale(inputs, scale_mean)
 
 print()
 print("Below are the scaled scores (in the order they were entered):")
