@@ -48,8 +48,9 @@ def inverse_power_scale(data: Sequence[float], power: float) -> List[float]:
 
     :param data: The sequence of floats to scale. The floats must be between
         zero and one, and will also be scaled within that range.
-    :param power: A float representing the scaling factor. A larger number
-        results in more scaling. A scaling factor of 1 has no effect.
+    :param power: A positive float representing the scaling factor. A larger
+        number results in scaling the numbers higher. A scaling factor of 1 has
+        no effect.
     :return: The sequence of floats after scaling. The floats in the sequence
         remain in the order they were given and the ``data`` is not modified.
     """
@@ -73,8 +74,9 @@ def power_scale(data: Sequence[float], power: float) -> List[float]:
 
     :param data: The sequence of floats to scale. The floats must be between
         zero and one, and will also be scaled within that range.
-    :param power: A float representing the scaling factor. A larger number
-        results in more scaling. A scaling factor of 1 has no effect.
+    :param power: A positive float representing the scaling factor. A larger
+        number results in scaling the numbers higher. A scaling factor of 1 has
+        no effect.
     :return: The sequence of floats after scaling. The floats in the sequence
         remain in the order they were given and the ``data`` is not modified.
     """
