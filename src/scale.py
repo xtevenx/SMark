@@ -1,8 +1,7 @@
 import enum
 import math
-from typing import Callable, List, Sequence
-
 import statistics
+from typing import Callable, List, Sequence
 
 _SCALE_FUNCTION = Callable[[Sequence[float], float], List[float]]
 
