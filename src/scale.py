@@ -68,12 +68,10 @@ def power_scale(data: Sequence[float], power: float) -> List[float]:
     """Scale a sequence of numbers based on the ``power_scale``.
 
     The ``power_scale`` is a variable tweak of the commonly used scaling method
-    where one scales a score, ``n`` {0 <= n <= 100}, by multiplying the square
-    root of ``n`` by a factor of 10, namely:
+    where one scales a score, :math:`x,\\ 0 \\leq x \\leq 100`, by multiplying
+    the square root of :math:`x` by a factor of 10, namely:
 
-    .. math::
-
-        n_{scaled} = 10 \\left( n_{original} ^ {\\frac{1}{2}} \\right)
+    .. math:: s(x) = 10 \\left( x ^ {\\frac{1}{2}} \\right)
 
     The ``power_scale`` allows the variation of the exponent (in the example,
     :math:`\\frac{1}{2}`) to achieve variable scaling rates.
