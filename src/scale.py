@@ -1,9 +1,15 @@
+import enum
 import math
 from typing import Callable, List, Sequence
 
 import statistics
 
 _SCALE_FUNCTION = Callable[[Sequence[float], float], List[float]]
+
+
+class Direction(enum.Enum):
+    UP: str = "up"
+    DOWN: str = "down"
 
 
 def scale(data: Sequence[float], target: float) -> List[float]:
@@ -82,6 +88,53 @@ def power_scale(data: Sequence[float], power: float) -> List[float]:
     """
 
     return [n ** (1 / power) for n in data]
+
+
+def _rational_scale(x: float, factor: float, direc: Direction = Direction.UP) -> float:
+    """Helper function for ``rational_scale()``."""
+    disc = math.sqrt(factor * (factor + 4))
+    p = (-factor + (1 if direc == Direction.UP else -1) * disc) / 2
+    return (factor * x) / (p * (factor * x + p))
+
+
+def rational_scale(
+        data: Sequence[float],
+        factor: float,
+        direc: Direction = Direction.UP
+) -> List[float]:
+    """Scale a sequence of numbers based on the ``rational_scale``.
+
+    The ``rational_scale`` is basically a transformation of the simple rational
+    function in the form :math:`f(x) = \\frac{1}{x}` such that :math:`f(0) = 0`
+    and :math:`f(1) = 1`. Some math derives the formula of the rational curve
+    that fits the above conditions as:
+
+    .. math:: s(x) = \\frac{ax}{p(ax + p)}
+
+    where :math:`a` is the scaling factor, and:
+
+    .. math:: p = \\frac{-a + \\sqrt{a(a + 4)}}{2}
+
+    for the curve scaling up and:
+
+    .. math:: p = \\frac{-a - \\sqrt{a(a + 4)}}{2}
+
+    for the curve scaling down.
+
+    This curve is symmetrical on :math:`y = -x + b` which may or may not have a
+    practical benefit, but the definite benefit is that it looks nice. :D
+
+    :param data: The sequence of floats to scale. The floats must be between
+        zero and one, and will also be scaled within that range.
+    :param factor: A positive float representing the scaling factor. A larger
+        number results in more scaling. A scaling factor of 0 has no effect.
+    :param direc: A Direction type signifying which direction to scale the
+        marks.
+    :return: The sequence of floats after scaling. The floats in the sequence
+        remain in the order they were given and the ``data`` is not modified.
+    """
+
+    return [_rational_scale(x, factor, direc) for x in data]
 
 
 def _geometric_binary_search(
