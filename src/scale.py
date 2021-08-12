@@ -7,8 +7,8 @@ _SCALE_FUNCTION = Callable[[Sequence[float], float], List[float]]
 
 
 class Direction(enum.Enum):
-    UP: str = "up"
-    DOWN: str = "down"
+    UP = "up"
+    DOWN = "down"
 
 
 def scale(data: Sequence[float], target: float) -> List[float]:
