@@ -33,6 +33,31 @@ def scale(data: Sequence[float], target: float) -> List[float]:
 
     assert all(0 <= n <= 1 for n in data) and 0 <= target <= 1
 
+    if target > statistics.mean(data):
+        scale_func: _SCALE_FUNCTION = lambda d, n: rational_scale(d, n, Direction.UP)
+    elif target < statistics.mean(data):
+        scale_func: _SCALE_FUNCTION = lambda d, n: rational_scale(d, n, Direction.DOWN)
+    else:
+        return list(data)
+
+    def scale_result(n: float) -> float:
+        return statistics.mean(scale_func(data, n))
+
+    scale_factor = _geometric_binary_search(scale_result, target)
+    return scale_func(data, scale_factor)
+
+
+def scale_stretch(data: Sequence[float], target: float) -> List[float]:
+    """Scale a sequence of numbers to a specific arithmetic mean.
+
+    Interface is identical to the ``scale()`` function.
+
+    Functions very similarly, except the scores are scaled while trying to keep
+    the spread of numbers large.
+    """
+
+    assert all(0 <= n <= 1 for n in data) and 0 <= target <= 1
+
     scale_func = inverse_power_scale if target > statistics.mean(data) else power_scale
 
     def scale_result(n: float) -> float:
