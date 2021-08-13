@@ -52,8 +52,10 @@ def scale_stretch(data: Sequence[float], target: float) -> List[float]:
 
     Interface is identical to the ``scale()`` function.
 
-    Functions very similarly, except the scores are scaled while trying to keep
-    the spread of numbers large.
+    Functions very similarly to ``scale()`` except the scores are scaled with a
+    different method which results in a large spread of values in the output
+    sequence. Use this if you want to highlight the outliers in a particular
+    group of values.
     """
 
     assert all(0 <= n <= 1 for n in data) and 0 <= target <= 1
