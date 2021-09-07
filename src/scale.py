@@ -97,7 +97,7 @@ def power_scale(data: Sequence[float], power: float) -> List[float]:
     where one scales a score, :math:`x,\\ 0 \\leq x \\leq 100`, by multiplying
     the square root of :math:`x` by a factor of 10, namely:
 
-    .. math:: s(x) = 10 \\left( x ^ {\\frac{1}{2}} \\right)
+    .. math:: s(x) = 10 \\sqrt{x}
 
     The ``power_scale`` allows the variation of the exponent (in the example,
     :math:`\\frac{1}{2}`) to achieve variable scaling rates.
