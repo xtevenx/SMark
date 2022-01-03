@@ -177,7 +177,7 @@ def _geometric_binary_search(
 
     This implementation of binary search uses the geometric mean instead of the
     arithmetic mean to determine the center of the search space. This is
-    because the values that are being searched are weighted towards zero.
+    because the values that are being searched are geometrically distributed.
 
     :param func: A Callable which accepts a float and returns a float. This
         must be a one-to-one function.
